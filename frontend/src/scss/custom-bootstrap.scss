@@ -1,0 +1,25 @@
+$body-bg: #282a36;
+
+
+
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "background-color": (
+      property: background-color,
+      class: bg,
+      values: map-merge(
+        $theme-colors,
+        (
+          "body": $body-bg,
+          "white": $white,
+          "red": red,
+          "transparent": transparent
+        )
+      )
+    ),
+  )
+);

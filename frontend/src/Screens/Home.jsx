@@ -1,7 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect, FormEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Post from '../components/Post'
+import { Row, Col, Container, Spinner, Alert } from "react-bootstrap";
+import { listPosts } from "../redux/actions/postActions";
+import { POST_LIST_RESET } from "../redux/constants/postConstants";
 
 function Home() {
-  return <div>This is main screen</div>;
+  const dispatch = useDispatch();
+
+  const postList = useSelector((state) => state.postList);
+  const { error, loading, posts } = postList;
+
+  useEffect(() => {
+    console.log("effect");
+    dispatch(listPosts());
+
+    return () => {
+      dispatch({ type: POST_LIST_RESET });
+    };
+  }, [dispatch]);
+
+  return (
+    <Container>
+      <Row>
+        <h1>Posts</h1>
+      </Row>
+      {loading ? (
+        <Spinner animation="border" role="status" />
+      ) : error ? (
+        <Alert variant="danger">{error}</Alert>
+      ) : (
+        posts.map((post) => {
+            return(<Post key={post.id} title={post.title} text={post.text}/>)
+        })
+      )}
+    </Container>
+  );
 }
 
 export default Home;
