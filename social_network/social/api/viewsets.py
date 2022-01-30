@@ -2,9 +2,15 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 
 from social.models import Post
-from .serializers import UserSerializer, PostSerializer
+from .serializers import UserSerializerWithToken, PostSerializer, UserSerializer
+
+from django.contrib.auth.hashers import make_password
+from rest_framework import status
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -22,6 +28,5 @@ class PostViewSet(viewsets.ModelViewSet):
     API endpoint that allows posts to be viewed or edited
     """
 
-    queryset= Post.objects.all()
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
-    
