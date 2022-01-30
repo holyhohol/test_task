@@ -22,6 +22,7 @@ function Home() {
 
   return (
     <Container>
+      
       <Row>
         <h1>Posts</h1>
       </Row>
