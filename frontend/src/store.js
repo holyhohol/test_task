@@ -7,11 +7,17 @@ import {
   userLoginReducer,
 } from "./redux/reducers/userReducers";
 
-import { postListReducer } from "./redux/reducers/postReducers";
+import {
+  postListReducer,
+  postUserListReducer,
+  postCreateReducer,
+} from "./redux/reducers/postReducers";
 
 const reducer = combineReducers({
   //post reducers
   postList: postListReducer,
+  postUserList: postUserListReducer,
+  postCreate: postCreateReducer,
 
   //user reducers
   userRegister: userRegisterReducer,

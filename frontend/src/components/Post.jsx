@@ -60,7 +60,7 @@ function Post({ postData, user }) {
         <Card.Footer className="post__meta">
           <div className="post__meta__user">{postData.author.first_name}</div>
           <div className="post__meta__created-at">
-            {formatDate(postData.createdAt)}
+            {formatDate(postData.created_at)}
           </div>
         </Card.Footer>
         {/* <FontAwesomeIcon size={'2x'} icon={Liked} /> */}

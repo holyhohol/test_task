@@ -1,18 +1,23 @@
 import React, { useEffect } from "react";
-
-import { Button, Container, Form } from "react-bootstrap";
+import { Alert, Button, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {createPost} from '../redux/actions/postActions'
+
 
 function CreatePost() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const postCreate = useSelector((state) => state.postCreate);
+  const {error, loading, message} = postCreate
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -24,13 +29,15 @@ function CreatePost() {
   }, [userInfo]);
 
   const submitHandler = (data) => {
-    console.log(data);
+    dispatch(createPost(data))
   };
 
   return (
     <Container>
       <h1>Create Your Post</h1>
-      <Form onSubmit={() => handleSubmit(submitHandler())}>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {message && <Alert variant='success'>{message.detail}</Alert>}
+      <Form onSubmit={handleSubmit(submitHandler)}>
         <Form.Group>
           <Form.Label>Title</Form.Label>
           <Form.Control
