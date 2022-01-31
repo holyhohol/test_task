@@ -30,6 +30,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class RegisterView(GenericAPIView):
+    """
+    View to register new user
+    """
     
     serializer_class = UserSerializer
 

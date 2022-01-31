@@ -12,7 +12,6 @@ function Home() {
   const { error, loading, posts } = postList;
 
   useEffect(() => {
-    console.log("effect");
     dispatch(listPosts());
 
     return () => {
@@ -21,7 +20,7 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container> 
       
       <Row>
         <h1>Posts</h1>

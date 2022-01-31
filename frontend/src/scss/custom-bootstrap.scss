@@ -2,9 +2,18 @@ $body-bg: #282a36;
 $body-color: #f8f8f2;
 $card-bg: #44475a;
 
-
+$nav-link-color: #f8f8f2;
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+.nav-link a{
+  color: #f8f8f2;
+  text-decoration: none;
+}
+
+.nav-link:hover a{
+  color: #44475a;
+}
 
 $utilities: map-merge(
   $utilities,
