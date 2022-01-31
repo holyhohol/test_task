@@ -5,6 +5,7 @@ import Home from "./screens/Home";
 import Header from "./components/Header";
 import Registration from "./screens/Registration";
 import Login from "./screens/Login";
+import CreatePost from "./screens/CreatePost";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/create-post" element={<CreatePost />} />
         </Routes>
       </BrowserRouter>
     </>

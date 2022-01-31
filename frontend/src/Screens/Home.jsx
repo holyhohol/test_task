@@ -11,6 +11,9 @@ function Home() {
   const postList = useSelector((state) => state.postList);
   const { error, loading, posts } = postList;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const {userInfo} = userLogin
+
   useEffect(() => {
     dispatch(listPosts());
 
@@ -34,11 +37,8 @@ function Home() {
           return (
             <Post
               key={post.id}
-              title={post.title}
-              text={post.text}
-              user="some user"
-              createdAt={post.created_at}
-              likesCount={post.likes}
+              postData = {post}
+              user = {{id: userInfo?.id, token: userInfo?.token }}
             />
           );
         })
