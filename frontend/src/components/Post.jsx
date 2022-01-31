@@ -19,7 +19,7 @@ const formatDate = (date) => {
   return event.toLocaleDateString(undefined, options);
 };
 
-function Post({ postData, user }) {
+function Post({ postData, user = '' }) {
   const navigate = useNavigate();
 
   const [liked, setLiked] = useState(postData.users_liked.includes(user.id));
@@ -63,7 +63,6 @@ function Post({ postData, user }) {
             {formatDate(postData.created_at)}
           </div>
         </Card.Footer>
-        {/* <FontAwesomeIcon size={'2x'} icon={Liked} /> */}
         <FontAwesomeIcon
           onClick={() => {
             if (user.id) {
@@ -72,7 +71,8 @@ function Post({ postData, user }) {
               navigate("/login");
             }
           }}
-          size={"2x"}
+          className="me-2"
+          size={"lg"}
           icon={liked ? Liked : Unliked}
         />
         <span>{likesCount}</span>

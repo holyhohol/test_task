@@ -29,6 +29,11 @@ function Header() {
           {userInfo ? (
             <>
               <Nav.Link as="div">
+                <Link to="/my-posts" className="btn btn-primary" as="Button">
+                  My Posts
+                </Link>
+              </Nav.Link>
+              <Nav.Link as="div">
                 <Link to="/create-post" className="btn btn-primary" as="Button">
                   Create Post
                 </Link>
