@@ -22,7 +22,13 @@ export const postListReducer = (state = { posts: [] }, action) => {
       return { loading: true, posts: [] };
 
     case POST_LIST_SUCCESS:
-      return { loading: false, posts: action.payload };
+      return {
+        loading: false,
+        posts: action.payload.results,
+        total_pages: action.payload.total_pages,
+        links: action.payload.links,
+        count: action.payload.count,
+      };
 
     case POST_LIST_FAIL:
       return { loading: false, error: action.payload };
@@ -66,7 +72,7 @@ export const postCreateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
 
     case POST_CREATE_RESET:
-      return { };
+      return {};
 
     default:
       return state;
@@ -79,11 +85,10 @@ export const postDeleteReducer = (state = {}, action) => {
       return { loading: true };
 
     case POST_DELETE_SUCCESS:
-      return { loading: false};
+      return { loading: false };
 
     case POST_DELETE_FAIL:
       return { loading: false, error: action.payload };
-
 
     default:
       return state;

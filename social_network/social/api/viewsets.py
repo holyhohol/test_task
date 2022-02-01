@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
+from social.service import PaginationPosts
 from social.models import Post, Like
 from .serializers import UserSerializerWithToken, PostSerializer, UserSerializer
 
@@ -31,7 +31,7 @@ class PostViewSet(viewsets.ModelViewSet):
     """
 
     permission_classes_by_action = {'create': [IsAuthenticated], 'destroy': [IsAuthenticated]}
-
+    pagination_class = PaginationPosts
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 

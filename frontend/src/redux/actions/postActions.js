@@ -16,11 +16,11 @@ import {
   POST_DELETE_FAIL,
 } from "../constants/postConstants";
 
-export const listPosts = () => async (dispatch) => {
+export const listPosts = (page) => async (dispatch) => {
   try {
     dispatch({ type: POST_LIST_REQUEST });
 
-    const { data } = await axios.get(`http://localhost:8000/api/posts/`);
+    const { data } = await axios.get(`http://localhost:8000/api/posts/${page ? `?page=${page}` : ''}`);
 
     dispatch({
       type: POST_LIST_SUCCESS,
@@ -74,7 +74,6 @@ export const listUserPosts = () => async (dispatch, getState) => {
 
 export const createPost = (postData) => async (dispatch, getState) => {
   try {
-    
     dispatch({ type: POST_CREATE_REQUEST });
 
     const {
@@ -88,7 +87,11 @@ export const createPost = (postData) => async (dispatch, getState) => {
       },
     };
 
-    const {data} = await axios.post(`http://localhost:8000/api/posts/`, postData, config) 
+    const { data } = await axios.post(
+      `http://localhost:8000/api/posts/`,
+      postData,
+      config
+    );
 
     dispatch({
       type: POST_CREATE_SUCCESS,
@@ -109,10 +112,8 @@ export const createPost = (postData) => async (dispatch, getState) => {
   }
 };
 
-
 export const deletePost = (id) => async (dispatch, getState) => {
   try {
-    
     dispatch({ type: POST_DELETE_REQUEST });
 
     const {
@@ -126,14 +127,15 @@ export const deletePost = (id) => async (dispatch, getState) => {
       },
     };
 
-    const {data} = await axios.delete(`http://localhost:8000/api/posts/${id}/`, config) 
+    const { data } = await axios.delete(
+      `http://localhost:8000/api/posts/${id}/`,
+      config
+    );
 
     dispatch({
       type: POST_DELETE_SUCCESS,
       payload: data,
     });
-
- 
   } catch (error) {
     dispatch({
       type: POST_DELETE_FAIL,
