@@ -30,15 +30,21 @@ class PostViewSet(viewsets.ModelViewSet):
     API endpoint that allows posts to be viewed or edited
     """
 
-    permission_classes_by_action = {'create': [IsAuthenticated]}
+    permission_classes_by_action = {'create': [IsAuthenticated], 'destroy': [IsAuthenticated]}
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+    def destroy(self, request, *args, **kwargs):
+        if request.user.id == Post.objects.get(id=kwargs['pk']).author.id or request.user.is_staff:
+            return super().destroy(request, *args, **kwargs)
+        else:
+            return Response({'detail': 'This is not your post'}, status=status.HTTP_403_FORBIDDEN)
+
     def create(self, request):
         data = request.data
         user = request.user
-        
+
         post = Post.objects.create(
             title=data['title'], text=data['text'], author=user)
 

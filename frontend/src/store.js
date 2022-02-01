@@ -11,6 +11,7 @@ import {
   postListReducer,
   postUserListReducer,
   postCreateReducer,
+  postDeleteReducer
 } from "./redux/reducers/postReducers";
 
 const reducer = combineReducers({
@@ -18,7 +19,7 @@ const reducer = combineReducers({
   postList: postListReducer,
   postUserList: postUserListReducer,
   postCreate: postCreateReducer,
-
+  postDelete: postDeleteReducer,
   //user reducers
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,

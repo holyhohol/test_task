@@ -11,6 +11,9 @@ import {
   POST_CREATE_SUCCESS,
   POST_CREATE_FAIL,
   POST_CREATE_RESET,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
+  POST_DELETE_FAIL,
 } from "../constants/postConstants";
 
 export const listPosts = () => async (dispatch) => {
@@ -98,6 +101,42 @@ export const createPost = (postData) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: POST_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+export const deletePost = (id) => async (dispatch, getState) => {
+  try {
+    
+    dispatch({ type: POST_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const {data} = await axios.delete(`http://localhost:8000/api/posts/${id}/`, config) 
+
+    dispatch({
+      type: POST_DELETE_SUCCESS,
+      payload: data,
+    });
+
+ 
+  } catch (error) {
+    dispatch({
+      type: POST_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

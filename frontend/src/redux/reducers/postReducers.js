@@ -11,6 +11,9 @@ import {
   POST_CREATE_SUCCESS,
   POST_CREATE_FAIL,
   POST_CREATE_RESET,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
+  POST_DELETE_FAIL,
 } from "../constants/postConstants";
 
 export const postListReducer = (state = { posts: [] }, action) => {
@@ -64,6 +67,23 @@ export const postCreateReducer = (state = {}, action) => {
 
     case POST_CREATE_RESET:
       return { };
+
+    default:
+      return state;
+  }
+};
+
+export const postDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case POST_DELETE_REQUEST:
+      return { loading: true };
+
+    case POST_DELETE_SUCCESS:
+      return { loading: false};
+
+    case POST_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+
 
     default:
       return state;
