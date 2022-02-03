@@ -9,6 +9,8 @@ import CreatePost from "./screens/CreatePost";
 import UserPosts from "./screens/UserPosts";
 import Analytics from "./screens/Analytics";
 import PostAnalytics from "./screens/PostAnalytics";
+import Admin from './screens/Admin'
+import AdminUsersActions from "./screens/AdminUsersActions";
 
 function App() {
   return (
@@ -21,7 +23,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/my-posts" element={<UserPosts />} />
+          <Route path="/admin" element={<Admin/>}/>
+          <Route path="/admin/users/:id" element={<AdminUsersActions/>}/>
           <Route path='my-posts/analytics/:id' element={<PostAnalytics/>}/>
+
         </Routes>
       </BrowserRouter>
     </>

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from social.models import Post, Like
+from social.models import Post, Like, Log
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -15,6 +15,15 @@ class UserSerializer(serializers.ModelSerializer):
     def get_isAdmin(self, obj):
         return obj.is_staff
 
+class AdminUsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'last_login', 'username', 'first_name', 'last_name']
+
+class AdminActionsSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Log
+        fields = "__all__"
 
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)

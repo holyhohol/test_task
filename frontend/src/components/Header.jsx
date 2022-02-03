@@ -70,6 +70,9 @@ function Header() {
               </Nav.Link>
             </>
           )}
+          {userInfo?.isAdmin && <Nav.Link as="div">
+              <Link as="Button" className="btn btn-primary" to="/admin">Admin</Link>
+            </Nav.Link>}
         </Nav>
       </Container>
     </Navbar>

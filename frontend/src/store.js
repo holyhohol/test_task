@@ -12,8 +12,10 @@ import {
   postUserListReducer,
   postCreateReducer,
   postDeleteReducer,
-  postAnalyticReducer
+  postAnalyticReducer,
 } from "./redux/reducers/postReducers";
+
+import { adminUserActionsReducer, adminUsersListReducer } from "./redux/reducers/adminReducers";
 
 const reducer = combineReducers({
   //post reducers
@@ -25,6 +27,9 @@ const reducer = combineReducers({
   //user reducers
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,
+  //admin reducers
+  adminUsersList: adminUsersListReducer,
+  adminUserActions: adminUserActionsReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

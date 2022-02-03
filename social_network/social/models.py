@@ -27,4 +27,8 @@ class Like(models.Model):
         return self.post.title + ": " + self.user.first_name
     
 
+class Log(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=255)
+    action_time = models.DateTimeField(auto_now_add=True)
 

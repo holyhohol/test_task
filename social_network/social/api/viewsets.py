@@ -1,18 +1,15 @@
 from sqlite3 import Date
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.db.models import Count
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-
 from social.service import DefaultPagination
-from social.models import Post, Like
-from .serializers import LikeByDateSerializer, LikeSerializer, UserSerializerWithToken, PostSerializer, UserSerializer
+from social.models import Post, Like, Log
+from .serializers import AdminActionsSerializer, AdminUsersSerializer, LikeByDateSerializer, LikeSerializer, UserSerializerWithToken, PostSerializer, UserSerializer
 
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
@@ -27,7 +24,25 @@ class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
+
+    @action(detail = False, methods=['GET'], url_path='all-users')
+    def get_all_users(self, request):
+        users = self.get_queryset()
+        serializer = AdminUsersSerializer(users, many=True)
+        return Response(serializer.data)
+
+    pagination_class = DefaultPagination
+    permission_classes_by_action = {
+        'create': [IsAuthenticated],
+        'destroy': [IsAuthenticated],
+        'retrieve': [IsAuthenticated]
+    }
+
+    def retrieve(self, request, pk, **kwargs):
+        actions = Log.objects.filter(user = pk)
+        serializer = AdminActionsSerializer(actions, many=True)
+        return Response(serializer.data)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -44,6 +59,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         """Only post author and admin can delete post"""
         if request.user.id == Post.objects.get(id=kwargs['pk']).author.id or request.user.is_staff:
+            Log.objects.create(user=request.user, action=f"Delted Post {kwargs['pk']}")
             return super().destroy(request, *args, **kwargs)
         else:
             return Response({'detail': 'This is not your post'}, status=status.HTTP_403_FORBIDDEN)
@@ -55,6 +71,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         post = Post.objects.create(
             title=data['title'], text=data['text'], author=user)
+        Log.objects.create(user= request.user, action=f"Created Post: {data['title']}")
 
         return Response({"detail": 'Post created'})
 
@@ -80,6 +97,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 post=post,
                 user=user,
             )
+            Log.objects.create(user=user, action=f"User {user.first_name} liked {post.title}")
             return Response({"detail": f'Post {pk} liked'})
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
@@ -95,6 +113,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         else:
             like.delete()
+            Log.objects.create(user=user, action=f'User {user.first_name} unliked post {post.title}')
             return Response({'detail': f'Post {pk} unliked'})
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated], url_path='user-posts')
