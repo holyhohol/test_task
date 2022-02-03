@@ -52,3 +52,12 @@ class PostSerializer(serializers.ModelSerializer):
     def get_users_liked(self, obj):
         likes = Like.objects.filter(post=obj.id)
         return (like.user.id for like in likes)
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = "__all__"
+
+class LikeByDateSerializer(serializers.Serializer):
+    created_at = serializers.DateField()
+    total = serializers.IntegerField()

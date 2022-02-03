@@ -14,13 +14,21 @@ import {
   POST_DELETE_REQUEST,
   POST_DELETE_SUCCESS,
   POST_DELETE_FAIL,
+  POST_ANALYTIC_REQUEST,
+  POST_ANALYTIC_SUCCESS,
+  POST_ANALYTIC_FAIL,
+  POST_ANALYTIC_RESET,
 } from "../constants/postConstants";
 
 export const listPosts = (page) => async (dispatch) => {
   try {
     dispatch({ type: POST_LIST_REQUEST });
 
-    const { data } = await axios.get(`http://localhost:8000/api/posts/${page ? `?page=${page}` : ''}`);
+    page = page ? `?page=${page}` : ''
+
+    const { data } = await axios.get(
+      `http://localhost:8000/api/posts/${page}`
+    );
 
     dispatch({
       type: POST_LIST_SUCCESS,
@@ -139,6 +147,42 @@ export const deletePost = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: POST_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const getPostAnalytic = (id, dates='') => async (dispatch, getState) => {
+  try {
+    dispatch({ type: POST_ANALYTIC_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `http://localhost:8000/api/posts/analytic/${id}/?${dates}`,
+      config
+    );
+
+    dispatch({
+      type: POST_ANALYTIC_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: POST_ANALYTIC_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

@@ -6,12 +6,18 @@ import { deletePost, listUserPosts } from "../redux/actions/postActions";
 import Post from "../components/Post";
 import { faTrashAlt, faChartBar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 function UserPosts() {
   const dispatch = useDispatch();
 
+  const navigate = useNavigate()
+
   const postUserList = useSelector((state) => state.postUserList);
   const { loading, error, posts } = postUserList;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     dispatch(listUserPosts());
@@ -29,7 +35,14 @@ function UserPosts() {
   return (
     <Container>
       <h1>My Posts</h1>
+
+      <Button>
+        <FontAwesomeIcon icon={faChartBar} className="me-1" />
+        General Statistic
+      </Button>
+
       {error && <Alert variant="danger">{error}</Alert>}
+
       {loading ? (
         <Spinner animation="border" role="status" />
       ) : (
@@ -38,7 +51,7 @@ function UserPosts() {
             <div key={post.id}>
               <Post postData={post} />
 
-              <Button className="mt-3 ms-0">
+              <Button className="mt-3 ms-0" onClick={()=>navigate(`analytics/${post.id}`)}>
                 <FontAwesomeIcon icon={faChartBar} className="me-1" />
                 View Statistic
               </Button>

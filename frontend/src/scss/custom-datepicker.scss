@@ -1,0 +1,32 @@
+.DayPicker-Day {
+  color: black;
+}
+.DayPicker-Day--disabled {
+  color: gray;
+}
+.DayPicker-Months {
+  background-color: #fdfdfd;
+  border-radius: 25px;
+}
+.DayPicker:not(.DayPicker--interactionDisabled)
+  .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+  background-color: #f9648c;
+}
+.DayPicker-Caption {
+  color: black;
+}
+.DayPicker {
+  position: absolute;
+}
+.DayPicker-Day--selected.DayPicker-Day.DayPicker-Day--end {
+    background-color: #f9648c !important;
+  border-radius: 0 20px 20px 0;
+}
+.DayPicker-Day--selected.DayPicker-Day.DayPicker-Day--start {
+    background-color: #f9648c !important;
+  border-radius: 20px 0 0 20px;
+}
+.DayPicker-Day--selected.DayPicker-Day { 
+    background-color: rgb(255,99,132, 0.3) !important;
+    border-radius: 0;
+}

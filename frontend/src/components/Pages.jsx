@@ -3,7 +3,7 @@ import { Pagination, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 
-const generatePageRange = (currentPage, lastPage, delta = 2) => {
+const generatePageRange = (currentPage, lastPage, delta = 3) => {
     // creates array with base 1 index
     const range = Array(lastPage)
         .fill()
@@ -29,14 +29,13 @@ const generatePageRange = (currentPage, lastPage, delta = 2) => {
 
 
 
-function Pages({ className, links, totalPages, currentPage }) {
+function Pages({links, totalPages, currentPage }) {
 
   const navigate = useNavigate()
   
   currentPage ? currentPage = Number(currentPage) : currentPage = 1
 
 
-  console.log(generatePageRange(currentPage, totalPages));
   return (
       <Pagination className="justify-content-center mt-5 mb-5">
         <Pagination.First href="?page=1"/>

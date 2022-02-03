@@ -14,6 +14,10 @@ import {
   POST_DELETE_REQUEST,
   POST_DELETE_SUCCESS,
   POST_DELETE_FAIL,
+  POST_ANALYTIC_REQUEST,
+  POST_ANALYTIC_SUCCESS,
+  POST_ANALYTIC_FAIL,
+  POST_ANALYTIC_RESET,
 } from "../constants/postConstants";
 
 export const postListReducer = (state = { posts: [] }, action) => {
@@ -89,6 +93,25 @@ export const postDeleteReducer = (state = {}, action) => {
 
     case POST_DELETE_FAIL:
       return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const postAnalyticReducer = (state = {}, action) => {
+  switch (action.type) {
+    case POST_ANALYTIC_REQUEST:
+      return { loading: true };
+
+    case POST_ANALYTIC_SUCCESS:
+      return { loading: false, likes: action.payload };
+
+    case POST_ANALYTIC_FAIL:
+      return { loading: false, error: action.payload };
+
+    case POST_ANALYTIC_RESET:
+      return {};
 
     default:
       return state;
